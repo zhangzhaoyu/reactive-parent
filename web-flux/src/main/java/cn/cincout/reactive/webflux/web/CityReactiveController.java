@@ -19,6 +19,11 @@ public class CityReactiveController {
     @Resource
     private ReactiveRedisTemplate<String, City> reactiveRedisTemplate;
 
+    @GetMapping(value = "/x")
+    public Mono<String> test() {
+        return Mono.just("hello");
+    }
+
     @GetMapping(value = "/{id}")
     public Mono<City> findById(@PathVariable("id") int id) {
         String key = "CITY_" + id;

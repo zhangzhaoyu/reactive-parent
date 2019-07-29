@@ -15,6 +15,7 @@
 
 	<modules>
 		<module>reactor-learn</module>
+		<module>reactor-netty</module>
 		<module>web-flux</module>
 	</modules>
 </project>

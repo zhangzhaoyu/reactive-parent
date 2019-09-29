@@ -1,5 +1,6 @@
 package cn.cincout.reactor.reactornetty.tcp;
 
+import io.netty.channel.ChannelOption;
 import reactor.core.publisher.Mono;
 import reactor.netty.DisposableServer;
 
@@ -16,6 +17,8 @@ public class TcpServer {
                         .create()
                         .host("localhost")
                         .port(8080)
+                        .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000)
+                        .wiretap(true)
                         .handle((inbound, outbound) -> outbound.sendString(Mono.just("hello world")))
                         .bindNow();
 

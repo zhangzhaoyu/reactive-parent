@@ -1,11 +1,8 @@
-package cn.cincout.reactive.webflux.web;
+package cn.cincout.reactive.web.mvc.web;
 
-import cn.cincout.reactive.webflux.domain.City;
+import cn.cincout.reactive.web.mvc.domain.City;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -16,15 +13,20 @@ import javax.annotation.Resource;
  * @sine 1.8
  */
 @RestController
-@RequestMapping("/block")
 public class CityController {
     @Resource
     private RedisTemplate<String, City> redisTemplate;
 
     @GetMapping(value = "/{id}")
     public City findById(@PathVariable("id") int id) {
-        String key = "CITY_" + id;
+        String key = "MVC_" + id;
         City city = redisTemplate.opsForValue().get(key);
         return city;
+    }
+
+    @PostMapping
+    public City saveCity(@RequestBody City city) {
+        String key = "MVC_" + city.getId();
+        return redisTemplate.opsForValue().getAndSet(key, city);
     }
 }

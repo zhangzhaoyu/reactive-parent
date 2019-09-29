@@ -1,5 +1,7 @@
 package cn.cincout.reactor.reactornetty.tcp;
 
+import reactor.core.publisher.Mono;
+import reactor.netty.Connection;
 import reactor.netty.DisposableServer;
 
 /**
@@ -10,14 +12,13 @@ import reactor.netty.DisposableServer;
  */
 public class TcpClient {
     public static void main(String[] args) {
-        DisposableServer server =
-                reactor.netty.tcp.TcpServer
-                        .create()
-                        .host("localhost")
-                        .port(8090)
-                        .handle((inbound, outbound) -> inbound.receive().then())
-                        .bindNow();
+        Connection connection = reactor.netty.tcp.TcpClient
+                .create()
+                .host("localhost")
+                .port(8080)
+                .handle((inbound, outbound) -> outbound.sendString(Mono.just("hello server")))
+                .connectNow();
 
-        server.onDispose().block();
+        connection.onDispose().block();
     }
 }
